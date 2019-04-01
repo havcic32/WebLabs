@@ -1,0 +1,36 @@
+#field {
+    position: relative;
+	margin-top: 50px;
+	margin-left: 50px;
+    background-size: 100% 100%;
+    float: left;
+}
+
+.image {
+	width: 64px;
+	height: 64px;
+	position: absolute;
+}
+
+.grass {
+	background-image: URL('../img/grass.png');
+}
+
+.foots {
+	background-image: URL('../img/foots.png');
+}
+
+.body {
+	background-image: URL('../img/body.png');
+}
+
+.block {
+	background-image: URL('../img/block.png');
+}
+
+.fire {
+	width: 6px;
+	height: 6px;
+	position: absolute;
+	background-image: URL('../img/fire.png');
+}
