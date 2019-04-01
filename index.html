@@ -1,0 +1,193 @@
+﻿<html lang="ru">
+	<head>
+		<title>Школьное расписание</title>
+		<style>
+			.table {
+				width: 500px;
+				border: 2px solid;
+			}
+			
+			td {
+				width: 250px;
+				font-size: 14px;
+				letter-spacing: 5px;
+			}
+			
+			th {
+				padding-right: 20px;
+			}
+			
+			caption {
+				font-size: 20px;
+				letter-spacing: 5px;
+				font-weight: bold;
+			}
+			
+			.slt {
+				border-color: green;
+				color: green;
+			}
+			
+			button {
+				width: 60px;
+				height: 30px;
+				foreground-color: #ff0000;
+				background-color: #dddddd;
+				font-size: 14.1pt;
+				font-weight: bold;
+			}
+		</style>
+		<script>
+			var days = {
+				pn: true,
+				vt: true,
+				sr: true,
+				ch: true,
+				pt: true
+			};
+			
+			function filter(day) {
+				var el = document.getElementById(day);
+				days[day] = !days[day];
+				
+				var table = document.getElementById('t' + day);
+				
+				if (days[day]) {
+					el.className = "day slt";
+					table.style.display = 'block';
+				}
+				else {
+					el.className = "day";
+					table.style.display = 'none';
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<header>
+			<div tabindex="0">Web8</div>
+			<div role="heading" aria-level="1" tabindex="0">
+				Laba 8
+			</div>
+		</header>
+		<div role="navigation">
+			<button id="pn" onclick="filter('pn')" class="day slt">Пн</button>
+			<button id="vt" onclick="filter('vt')" class="day slt">Вт</button>
+			<button id="sr" onclick="filter('sr')" class="day slt">Ср</button>
+			<button id="ch" onclick="filter('ch')" class="day slt">Чт</button>
+			<button id="pt" onclick="filter('pt')" class="day slt">Пт</button>
+		</div>
+		<div role="main">
+			<div class="table" id="tpn">
+				<table role="grid">
+					<caption>
+						<div tabindex="0">Понедельник</div>
+					</caption>
+					<tr>
+						<th scope="row">1</th>
+						<td>08:00</td>
+						<td>Математика</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>09:00</td>
+						<td>Русский</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>10:00</td>
+						<td>Английский</td>
+					</tr>
+				</table>
+			</div>
+			<div class="table" id="tvt">
+				<table role="grid">
+					<caption>
+						<div tabindex="0">Вторник</div>
+					</caption>
+					<tr>
+						<th scope="row">1</th>
+						<td>08:00</td>
+						<td>Математика</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>09:00</td>
+						<td>Русский</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>10:00</td>
+						<td>Английский</td>
+					</tr>
+				</table>
+			</div>
+			<div class="table" id="tsr">
+				<table role="grid">
+					<caption>
+						<div tabindex="0">Среда</div>
+					</caption>
+					<tr>
+						<th scope="row">1</th>
+						<td>08:00</td>
+						<td>Математика</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>09:00</td>
+						<td>Русский</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>10:00</td>
+						<td>Английский</td>
+					</tr>
+				</table>
+			</div>
+			<div class="table" id="tch">
+				<table role="grid">
+					<caption>
+						<div tabindex="0">Четверг</div>
+					</caption>
+					<tr>
+						<th scope="row">1</th>
+						<td>08:00</td>
+						<td>Математика</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>09:00</td>
+						<td>Русский</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>10:00</td>
+						<td>Английский</td>
+					</tr>
+				</table>
+			</div>
+			<div class="table" id="tpt">
+				<table role="grid">
+					<caption>
+						<div tabindex="0">Пятница</div>
+					</caption>
+					<tr>
+						<th scope="row">1</th>
+						<td>08:00</td>
+						<td>Математика</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>09:00</td>
+						<td>Русский</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>10:00</td>
+						<td>Английский</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
