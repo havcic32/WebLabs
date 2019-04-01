@@ -93,26 +93,6 @@ Controller.prototype.getFires = function() {
 	return this.model.getFires();
 }
 
-Controller.prototype.getEnemies = function() {
-	return this.model.getEnemies();
-}
-
-Controller.prototype.getMap = function() {
-	return this.model.getMap();
-}
-
-Controller.prototype.getCoins = function() {
-	return this.model.getCoins();
-}
-
-Controller.prototype.getSecret = function() {
-	return this.model.getSecret();
-}
-
-Controller.prototype.getSecretB = function() {
-	return this.model.getSecretB();
-}
-
 var controller = new Controller(view, model);
 
 view.bindController(controller);

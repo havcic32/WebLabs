@@ -9,41 +9,9 @@ const FIELD_HEIGHT = 10;
 const HERO_SPEED = 5.0;
 
 const LEVEL = [
-	 [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-	 [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0],
-	 [1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-	 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0],
-	 [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0],
-	 [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
-	 [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]
-];
-
-const ENEMIES = [
-	{x: 370, y: 620},
-	{x: 370, y: 820},
-	{x: 570, y: 820},
-	{x: 1070, y: 820},
-	{x: 970, y: 220},
-	{x: 870, y: 220},
-	{x: 1070, y: 520},
-	{x: 1070, y: 220}
-];
-
-const COINS = [
-	{x: 150, y: 120},
-	{x: 850, y: 320},
-	{x: 1050, y: 120},
-	{x: 1050, y: 620},
-	{x: 170, y: 720},
+	{x: 100, y: 350},
+	{x: 350, y: 100},
+	{x: 500, y: 450}
 ];
 
 var Model = function() {
@@ -59,19 +27,9 @@ var Model = function() {
 	this.mx = 0;
 	this.my = 0;
 	
-	this.blocks = new Array();
+	this.blocks = LEVEL;
 	
 	this.fires = new Array();
-	this.enemies = new Array();
-	this.coins = new Array();
-	
-	this.map = {
-		x: 0,
-		y: 0
-	};
-	
-	this.secret = false;
-	this.secretB = 0;
 }
 
 Model.prototype.init = function() {
@@ -80,61 +38,32 @@ Model.prototype.init = function() {
 	this.keys[KEY_DOWN] = false;
 	this.keys[KEY_LEFT] = false;
 	
-	this.hero.x = 640 / 2;
-	this.hero.y = 640 / 2;
+	this.hero.x = 120;
+	this.hero.y = 150;
 	
-	for (var y = 0; y < LEVEL.length; y++) {
-		var ul = LEVEL[y];
-		for (var x = 0; x < ul.length; x++) {
-			var el = LEVEL[y][x];
-			if (el == 1) {
-				this.blocks.push({
-					x: x * 64,
-					y: y * 64,
-					secret: false
-				});
-			}
-		}
-	}
 	
-	this.secretB = parseInt(Math.random() * this.blocks.length);
-	
-	for (var i = 0; i < ENEMIES.length; i++) {
-		var e = ENEMIES[i];
-		
-		var enemy = {
-			x: e.x,
-			y: e.y,
-			a: Math.random * 360,
-			h: 100
-		};
-		
-		this.enemies.push(enemy);
-	}
-	
-	this.coins = COINS;
 }
 
 Model.prototype.update = function(dt) {
 	// keys
-	var hox = this.hero.x;
-	var hoy = this.hero.y;
-	
 	if (this.keys[KEY_UP])		{ this.hero.y -= HERO_SPEED;	this.hero.lastDir = KEY_UP;		this.checkForBlock(this.hero, KEY_UP); }
 	if (this.keys[KEY_RIGHT])	{ this.hero.x += HERO_SPEED;	this.hero.lastDir = KEY_RIGHT;	this.checkForBlock(this.hero, KEY_RIGHT); }
 	if (this.keys[KEY_DOWN])	{ this.hero.y += HERO_SPEED;	this.hero.lastDir = KEY_DOWN;	this.checkForBlock(this.hero, KEY_DOWN); }
 	if (this.keys[KEY_LEFT])	{ this.hero.x -= HERO_SPEED;	this.hero.lastDir = KEY_LEFT;	this.checkForBlock(this.hero, KEY_LEFT); }
 	
-	this.map.x -= this.hero.x - hox;
-	this.map.y -= this.hero.y - hoy;
+	// check area
+	if (this.hero.x < 32) this.hero.x = 32;
+	if (this.hero.y < 32) this.hero.y = 32;
+	if (this.hero.x > FIELD_WIDTH * 64 - 32) this.hero.x = FIELD_WIDTH * 64 - 32;
+	if (this.hero.y > FIELD_HEIGHT * 64 - 32) this.hero.y = FIELD_HEIGHT * 64 - 32;
 	
 	// mouse move
 	var hx = this.hero.x;
 	var hy = this.hero.y;
 	
-	var dx = this.mx - hx - this.map.x;
-	var dy = this.my - hy - this.map.y;
-
+	var dx = this.mx - hx;
+	var dy = this.my - hy;
+	
 	var angle = Math.atan2(dy, dx);
 	
 	this.hero.angle = angle * 180 / Math.PI;
@@ -148,15 +77,9 @@ Model.prototype.update = function(dt) {
 		this.fires[i].x += f.vx;
 		this.fires[i].y += f.vy;
 		
-		var ex = true;
-		f.h -= dt;
-		
-		if (f.h <= 0) {
+		if (f.x + 3 > FIELD_WIDTH * 64 || f.x - 3 < 0 || f.y + 3 > FIELD_HEIGHT * 64 || f.y - 3 < 0)
 			toSplice.push(f);
-			ex = false;
-		}
-		
-		if (ex) {
+		else {
 			for (var j = 0; j < this.blocks.length; j++) {
 				var b = this.blocks[j];
 				
@@ -167,39 +90,7 @@ Model.prototype.update = function(dt) {
 				var fy = f.y;
 				
 				if (fx + 3 > bx - 32 && fx - 3 < bx + 32 && fy + 3 > by - 32 && fy - 3 < by + 32) {
-					if (j == this.secretB) {
-						this.blocks[j].secret = true;
-						this.secret = true;
-						this.checkWin();
-					}
-					
 					toSplice.push(f);
-					ex = false;
-					break;
-				}
-			}
-		}
-		
-		if (ex) {
-			// enemies
-			for (var j = 0; j < this.enemies.length; j++) {
-				var e = this.enemies[j];
-				
-				var dx = e.x - f.x;
-				var dy = e.y - f.y;
-				
-				var dist = Math.sqrt(dx*dx + dy*dy);
-				
-				if (dist < 32) {
-					toSplice.push(f);
-					ex = false;
-					
-					this.enemies[j].h -= 5;
-					if (this.enemies[j].h <= 0) {
-						this.enemies.splice(this.enemies.indexOf(e), 1);
-						this.checkWin();	
-					}
-					
 					break;
 				}
 			}
@@ -208,56 +99,6 @@ Model.prototype.update = function(dt) {
 	
 	for (var i = 0; i < toSplice.length; i++)
 		this.fires.splice(this.fires.indexOf(toSplice[i]), 1);
-	
-	// enemies
-	for (var i = 0; i < this.enemies.length; i++) {
-		var e = this.enemies[i];
-		
-		var dx = hx - e.x;
-		var dy = hy - e.y;
-		
-		var angle = Math.atan2(dy, dx);
-		
-		e.a = angle * 180 / Math.PI;
-		
-		// lose
-		var dx = e.x - this.hero.x;
-		var dy = e.y - this.hero.y;
-		
-		var dist = Math.sqrt(dx*dx + dy*dy);
-		
-		if (dist < 45) {
-			alert("You lose");
-			location.reload();
-		}
-		
-		// move
-		var vx = Math.cos(angle) * 1.0;
-		var vy = Math.sin(angle) * 1.0;
-		
-		this.enemies[i].x += vx;
-		this.enemies[i].y += vy;
-		
-		if (vy < 0) this.checkForBlock(this.enemies[i], KEY_UP);
-		if (vx > 0) this.checkForBlock(this.enemies[i], KEY_RIGHT);
-		if (vy > 0) this.checkForBlock(this.enemies[i], KEY_DOWN);
-		if (vx < 0) this.checkForBlock(this.enemies[i], KEY_LEFT);
-	}
-	
-	// coins
-	for (var i = 0; i < this.coins.length; i++) {
-		var c = this.coins[i];
-		
-		var dx = this.hero.x - c.x;
-		var dy = this.hero.y - c.y;
-		
-		var dist = Math.sqrt(dx*dx + dy*dy);
-		if (dist < 50) {
-			this.coins.splice(this.coins.indexOf(c), 1);
-			this.checkWin();
-			break;
-		}
-	}
 }
 
 Model.prototype.checkForBlock = function(object, dir) {
@@ -289,15 +130,6 @@ Model.prototype.checkForBlock = function(object, dir) {
 	}
 }
 
-Model.prototype.checkWin = function() {
-	if (this.enemies == 0 && this.coins.length == 0 && this.secret) {
-		setTimeout(function() {
-			alert("You win");
-			location.reload();
-		}, 1500);
-	}
-}
-
 Model.prototype.keyDown = function(key) {
 	this.keys[key] = true;
 }
@@ -323,8 +155,7 @@ Model.prototype.mouseDown = function() {
 		x: h.x,
 		y: h.y,
 		vx: vx,
-		vy: vy,
-		h: 1
+		vy: vy
 	}
 	
 	this.fires.push(fire);
@@ -340,25 +171,6 @@ Model.prototype.getBlocks = function() {
 
 Model.prototype.getFires = function() {
 	return this.fires;
-}
-
-Model.prototype.getEnemies = function() {
-	return this.enemies;
-}
-
-Model.prototype.getMap = function() {
-	return this.map;
-}
-
-Model.prototype.getCoins = function() {
-	return this.coins;
-}
-
-Model.prototype.getSecret = function() {
-	return this.secret;
-}
-Model.prototype.getSecretB = function() {
-	return this.blocks[this.secretB];
 }
 
 var model = new Model();
